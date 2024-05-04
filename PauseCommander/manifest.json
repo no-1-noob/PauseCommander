@@ -1,0 +1,39 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
+  "id": "PauseCommander",
+  "name": "PauseCommander",
+  "author": "",
+  "version": "0.0.1",
+  "description": "",
+  "gameVersion": "1.18.3",
+  "dependsOn": {
+    "BSIPA": "^4.2.0"
+  },
+  "features": {
+    "VoiceCommander.VoiceCommand": {
+      "Commands": [
+        {
+          "name": "PauseCommander",
+          "CommandLoacation": "PauseCommander.Command.PauseCommand",
+          "ZenjectLocation": "StandardPlayer"
+        },
+        {
+          "name": "PauseCommanderMainMenu",
+          "CommandLoacation": "PauseCommander.Command.PauseCommandMainMenu",
+          "ZenjectLocation": "App"
+        }
+      ]
+    },
+    "CountersPlus.CustomCounter": {
+      "Name": "PauseCommander",
+      "Description": "PauseCommander",
+      "CounterLocation": "PauseCommander.Counter.PauseCommanderCounter",
+      "MultiplayerReady": false,
+      "ConfigDefaults": {
+        "Enabled": true,
+        "Position": "AboveCombo",
+        "Distance": 0
+      }
+    }
+  }
+}
