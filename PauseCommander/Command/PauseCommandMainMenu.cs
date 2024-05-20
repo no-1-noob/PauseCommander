@@ -1,12 +1,6 @@
-﻿using PauseCommander.Logic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using VoiceCommander.Data;
 using VoiceCommander.Interfaces;
-using Zenject;
 
 namespace PauseCommander.Command
 {
@@ -17,8 +11,9 @@ namespace PauseCommander.Command
 
         public PauseCommandMainMenu()
         {
-            Plugin.Log.Error("PauseCommandMainMenu added");
-            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommandMainMenu.Test", "Test 1", UnityEngine.Windows.Speech.ConfidenceLevel.High, () => Plugin.Log.Error("PauseCommandMainMenu Test1")));
+            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommandMainMenu.Test", "Test 1", 0.9f, () => Plugin.Log.Error("PauseCommandMainMenu Test1")));
+            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommandMainMenu.Test", "Test 2", 0.9f, () => Plugin.Log.Error("PauseCommandMainMenu Test1")));
+            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommandMainMenu.Test2", "Test 2", 0.9f, () => Plugin.Log.Error("PauseCommandMainMenu Test1")));
         }
 
         
