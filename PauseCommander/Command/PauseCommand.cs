@@ -8,7 +8,9 @@ namespace PauseCommander.Command
 {
     public class PauseCommand : IVoiceCommandHandler
     {
+#pragma warning disable CS0649
         [Inject] private readonly PauseSongMgr pauseMgr;
+#pragma warning restore
 
         public List<VoiceCommand> lsVoicecommand { get; } = new List<VoiceCommand>();
 

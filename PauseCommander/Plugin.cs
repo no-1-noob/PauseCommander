@@ -1,12 +1,4 @@
 ﻿using IPA;
-using IPA.Config;
-using IPA.Config.Stores;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
 using SiraUtil.Zenject;
 using PauseCommander.Installers;
@@ -30,7 +22,7 @@ namespace PauseCommander
             Instance = this;
             Log = logger;
             Log.Info("PauseCommander initialized.");
-            zenjector.Install<PauseSongInstaller>(Location.StandardPlayer);
+            zenjector.Install<PauseSongInstaller>(Location.StandardPlayer | Location.CampaignPlayer);
         }
 
         #region BSIPA Config
@@ -48,16 +40,11 @@ namespace PauseCommander
         [OnStart]
         public void OnApplicationStart()
         {
-            Log.Debug("OnApplicationStart");
-            new GameObject("PauseCommanderController").AddComponent<PauseCommanderController>();
-
         }
 
         [OnExit]
         public void OnApplicationQuit()
         {
-            Log.Debug("OnApplicationQuit");
-
         }
     }
 }

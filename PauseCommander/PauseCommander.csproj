@@ -119,7 +119,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\PauseCommandMainMenu.cs" />
     <Compile Include="Command\PauseCommand.cs" />
     <Compile Include="Counter\PauseCommanderCounter.cs" />
     <Compile Include="Data\Pause.cs" />
@@ -127,7 +126,6 @@
     <Compile Include="Logic\PauseSongMgr.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
-    <Compile Include="PauseCommanderController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

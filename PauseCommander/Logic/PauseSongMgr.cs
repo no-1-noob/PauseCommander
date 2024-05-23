@@ -9,10 +9,12 @@ namespace PauseCommander.Logic
 {
     internal class PauseSongMgr : IInitializable, IDisposable, ITickable
     {
+#pragma warning disable CS0649
         [Inject] private readonly AudioTimeSyncController audioTimeSyncController;
         [Inject] private readonly BeatmapObjectManager beatmapObjectManager;
         [Inject] private readonly GameplayCoreSceneSetupData setupData;
         [Inject] private readonly PauseController pauseController;
+#pragma warning restore
 
         public event EventHandler<float?> OnNextPauseUpdated;
         public event EventHandler<float?> OnPauseActivated;
@@ -48,17 +50,14 @@ namespace PauseCommander.Logic
         #region events
         internal void ImmediatePause()
         {
-            Plugin.Log.Error($"PauseImmediate {pauseController}");
             pauseController?.Pause();
         }
 
         internal void ActivatePause()
         {
-            Plugin.Log.Error($"ActivatePause {pauseController}");
             Pause nextPause = lsPause.Find(x => x.Start >= audioTimeSyncController.songTime);
             if (nextPause != null)
             {
-                Plugin.Log.Error($"Next pause in {nextPause.Start - audioTimeSyncController.songTime}s and {nextPause.NoteCount} notes");
                 this.nextPause = nextPause;
                 OnPauseActivated?.Invoke(this, nextPause.Start + pauseDelay - audioTimeSyncController.songTime);
             }
@@ -70,7 +69,6 @@ namespace PauseCommander.Logic
 
         internal void DisablePause()
         {
-            Plugin.Log.Error($"DisablePause {pauseController}");
             nextPause = null;
             OnPauseDisabled?.Invoke(this, null);
         }
@@ -80,17 +78,14 @@ namespace PauseCommander.Logic
         internal async Task GetPausesFromSong(CustomBeatmapLevel customBeatmapLevel, IDifficultyBeatmap difficultyBeatmap, PlayerSpecificSettings playerSpecificSettings)
         {
             DateTime dtStart = DateTime.Now;
-            Plugin.Log.Error("GetPausesFromSong");
             IReadonlyBeatmapData beatmapData = await difficultyBeatmap.GetBeatmapDataAsync(customBeatmapLevel.environmentInfo, playerSpecificSettings);
             List<NoteData> lsNoteData = GetNoteData(beatmapData);
-            Plugin.Log?.Error($"GetPausesFromSong lsNoteData {lsNoteData.Count}");
             lsPause = GetPauses(lsNoteData, 1);
-            Plugin.Log?.Error($"GetPausesFromSong Analyzed in {DateTime.Now - dtStart}. Found {lsPause.Count} pauses");
+            //Plugin.Log?.Error($"GetPausesFromSong Analyzed in {DateTime.Now - dtStart}. Found {lsPause.Count} pauses");
         }
 
         internal void ClearPauses()
         {
-            Plugin.Log.Error("ClearPauses");
             lsPause = new List<Pause>();
         }
         #endregion
@@ -98,7 +93,6 @@ namespace PauseCommander.Logic
         private static List<NoteData> GetNoteData(IReadonlyBeatmapData beatmapData)
         {
             List<NoteData> lsNotes = beatmapData.GetBeatmapDataItems<NoteData>(0).ToList();
-            Plugin.Log?.Error($"GetNoteData lsNoteData {lsNotes.Count}");
             lsNotes = lsNotes.Where(x => x.colorType != ColorType.None).ToList();
             return lsNotes;
         }
@@ -165,7 +159,6 @@ namespace PauseCommander.Logic
 
         private void CheckNotesLeft(NoteController noteController)
         {
-            //Plugin.Log.Error($"CheckNotesLeft {noteCount} {noteDone} {noteController.noteData.colorType}");
             if(noteController.noteData.colorType != ColorType.None)
             {
                 noteDone++;

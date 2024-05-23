@@ -15,12 +15,7 @@
         {
           "name": "PauseCommander",
           "CommandLoacation": "PauseCommander.Command.PauseCommand",
-          "ZenjectLocation": "StandardPlayer"
-        },
-        {
-          "name": "PauseCommanderMainMenu",
-          "CommandLoacation": "PauseCommander.Command.PauseCommandMainMenu",
-          "ZenjectLocation": "App"
+          "ZenjectLocation": "0xC"
         }
       ]
     },

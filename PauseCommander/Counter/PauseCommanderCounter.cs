@@ -1,13 +1,11 @@
 ﻿using CountersPlus.Utils;
 using HMUI;
 using PauseCommander.Logic;
-using SiraUtil.Extras;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-using BeatSaberMarkupLanguage;
 using CountersPlus.ConfigModels;
 using System.Threading.Tasks;
 
@@ -15,7 +13,9 @@ namespace PauseCommander.Counter
 {
     internal class PauseCommanderCounter : CountersPlus.Counters.Custom.BasicCustomCounter
     {
-        [Inject] private readonly PauseSongMgr pauseSongMgr;
+#pragma warning disable CS0649
+        [InjectOptional] private readonly PauseSongMgr pauseSongMgr;
+#pragma warning restore
         private TMP_Text pauseText;
         private TMP_Text noPauseFound;
         private TMP_Text pauseIcon;
@@ -58,18 +58,24 @@ namespace PauseCommander.Counter
                 noPauseFound.gameObject.SetActive(false);
                 pauseIcon.gameObject.SetActive(false);
             }
-            pauseSongMgr.OnPauseActivated += PauseSongMgr_OnPauseActivated;
-            pauseSongMgr.OnNextPauseUpdated += PauseSongMgr_OnNextPauseUpdated;
-            pauseSongMgr.OnPauseDisabled += PauseSongMgr_OnPauseDisabled;
-            pauseSongMgr.OnPauseActivatedFailed += PauseSongMgr_OnPauseActivatedFailed;
+            if(pauseSongMgr != null)
+            {
+                pauseSongMgr.OnPauseActivated += PauseSongMgr_OnPauseActivated;
+                pauseSongMgr.OnNextPauseUpdated += PauseSongMgr_OnNextPauseUpdated;
+                pauseSongMgr.OnPauseDisabled += PauseSongMgr_OnPauseDisabled;
+                pauseSongMgr.OnPauseActivatedFailed += PauseSongMgr_OnPauseActivatedFailed;
+            }
         }
 
         public override void CounterDestroy()
         {
-            pauseSongMgr.OnPauseActivated -= PauseSongMgr_OnPauseActivated;
-            pauseSongMgr.OnNextPauseUpdated -= PauseSongMgr_OnNextPauseUpdated;
-            pauseSongMgr.OnPauseDisabled -= PauseSongMgr_OnPauseDisabled;
-            pauseSongMgr.OnPauseActivatedFailed -= PauseSongMgr_OnPauseActivatedFailed;
+            if (pauseSongMgr != null)
+            {
+                pauseSongMgr.OnPauseActivated -= PauseSongMgr_OnPauseActivated;
+                pauseSongMgr.OnNextPauseUpdated -= PauseSongMgr_OnNextPauseUpdated;
+                pauseSongMgr.OnPauseDisabled -= PauseSongMgr_OnPauseDisabled;
+                pauseSongMgr.OnPauseActivatedFailed -= PauseSongMgr_OnPauseActivatedFailed;
+            }
         }
 
         private void PauseSongMgr_OnPauseActivated(object sender, float? e)
