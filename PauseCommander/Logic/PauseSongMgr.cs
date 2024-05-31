@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Zenject;
+using UnityEngine.XR;
 
 namespace PauseCommander.Logic
 {
@@ -37,6 +38,7 @@ namespace PauseCommander.Logic
                 _ = GetPausesFromSong(setupData.previewBeatmapLevel as CustomBeatmapLevel, setupData.difficultyBeatmap, setupData.playerSpecificSettings);
 
             }
+            InputDevices.deviceDisconnected += InputDevices_deviceDisconnected;
         }
 
         public void Dispose()
@@ -45,6 +47,7 @@ namespace PauseCommander.Logic
             beatmapObjectManager.noteWasCutEvent -= BeatmapObjectManager_noteWasCutEvent;
             beatmapObjectManager.noteWasMissedEvent -= BeatmapObjectManager_noteWasMissedEvent;
             pauseController.didPauseEvent -= PauseController_didPauseEvent;
+            InputDevices.deviceDisconnected -= InputDevices_deviceDisconnected;
         }        
 
         #region events
@@ -131,6 +134,13 @@ namespace PauseCommander.Logic
         private void PauseController_didPauseEvent()
         {
             DisablePause();
+        }
+        private void InputDevices_deviceDisconnected(InputDevice inputDevice)
+        {
+            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+            {
+                ImmediatePause();
+            }
         }
         private void PauseCoreMgr_OnActivatePause(object sender, EventArgs e)
         {
