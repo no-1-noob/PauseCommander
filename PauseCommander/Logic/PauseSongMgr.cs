@@ -83,8 +83,7 @@ namespace PauseCommander.Logic
             DateTime dtStart = DateTime.Now;
             IReadonlyBeatmapData beatmapData = await difficultyBeatmap.GetBeatmapDataAsync(customBeatmapLevel.environmentInfo, playerSpecificSettings);
             List<NoteData> lsNoteData = GetNoteData(beatmapData);
-            lsPause = GetPauses(lsNoteData, 1);
-            //Plugin.Log?.Error($"GetPausesFromSong Analyzed in {DateTime.Now - dtStart}. Found {lsPause.Count} pauses");
+            lsPause = GetPauses(lsNoteData, Configuration.PluginConfig.Instance.MinPauseLength, pauseDelay);
         }
 
         internal void ClearPauses()
@@ -100,7 +99,7 @@ namespace PauseCommander.Logic
             return lsNotes;
         }
 
-        private static List<Pause> GetPauses(List<NoteData> lsNotes, int pauseLength)
+        private static List<Pause> GetPauses(List<NoteData> lsNotes, float pauseLength, float pauseDelay)
         {
             lsNotes = lsNotes.OrderBy(x => x.time).ToList();
             List<Pause> lsPauses = new List<Pause>();
@@ -109,7 +108,7 @@ namespace PauseCommander.Logic
             foreach (NoteData note in lsNotes)
             {
                 float possPauseLength = note.time - lastNoteTime;
-                if ((possPauseLength) >= pauseLength)
+                if ((possPauseLength) >= (pauseLength + pauseDelay))
                 {
                     lsPauses.Add(new Pause(lastNoteTime, possPauseLength, count));
                 }
@@ -137,7 +136,7 @@ namespace PauseCommander.Logic
         }
         private void InputDevices_deviceDisconnected(InputDevice inputDevice)
         {
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+            if (Configuration.PluginConfig.Instance.IsControllerDisconnectPauseActive && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
             {
                 ImmediatePause();
             }

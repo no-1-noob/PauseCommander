@@ -130,6 +130,8 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\PauseCommanderFlowCoordinator.cs" />
+    <Compile Include="UI\ViewController\SettingsMidViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
@@ -137,6 +139,7 @@
   <ItemGroup>
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="PauseCommander.csproj.user" Condition="Exists('PauseCommander.csproj.user')" />
+    <EmbeddedResource Include="UI\View\SettingsMidView.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">

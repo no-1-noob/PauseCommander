@@ -1,0 +1,6 @@
+﻿<scrollable-settings-container>
+  <vertical vertical-fit='PreferredSize' preferred-width='100' child-align='MiddleCenter' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+    <slider-setting text='Min pause length (sec)' value='min-pause-length' hover-hint='Time where there have to be no notes to cut. (A default 0.5s delay of pauses is added before the given time)' min='0.1' max='10' increment='0.1' bind-value='true' apply-on-change='true' integer-only='false'/>
+    <bool-setting text='Controller disconnect pauses' value='activate-controller-disconnect' bind-value='true' apply-on-change='true'></bool-setting>
+  </vertical>
+</scrollable-settings-container>
