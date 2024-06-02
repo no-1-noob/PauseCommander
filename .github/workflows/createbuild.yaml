@@ -16,6 +16,17 @@ jobs:
                   submodules: recursive
             - name: Add msbuild to PATH
               uses: microsoft/setup-msbuild@v2
+              
+              - name: Initialize modding environment
+              uses: beat-forge/init-beatsaber@v1.1.0
+              with:
+                  token: ${{ github.token }}
+                  version: 1.29.0
+            - name: Download Mod Dependencies
+              uses: Goobwabber/download-beatmods-deps@1.2
+              with:
+                  manifest: ${{ github.workspace }}/PauseCommander/manifest.json
+              
             - name: Download ZIP file
               run: |
                 Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1_beta/VoiceCommander-0.0.1-bs1.29.0-3968530.zip" -OutFile "$env:TEMP\VC.zip"
@@ -35,49 +46,40 @@ jobs:
               run: |
                 Copy-Item -Path "$env:TEMP\unzipped\*" -Destination "${{ github.workspace }}/Refs" -Recurse
               shell: pwsh
-            # - name: Initialize modding environment
-              # uses: beat-forge/init-beatsaber@v1.1.0
-              # with:
-                  # token: ${{ github.token }}
-                  # version: 1.29.0
-            # - name: Download Mod Dependencies
-              # uses: Goobwabber/download-beatmods-deps@1.2
-              # with:
-                  # manifest: ${{ github.workspace }}/VoiceCommander/manifest.json
-            # - name: Build
-              # id: Build
-              # run: msbuild ${{ github.workspace }}/VoiceCommander.sln /property:Configuration=Release
-            # - name: GitStatus
-              # run: git status
-            # - name: Read variables from file and set outputs
-              # id: set-outputs
-              # shell: pwsh
-              # run: |
-                # $content = Get-Content -Path ${{ github.workspace }}/VoiceCommander/build_output.txt
-                # foreach ($line in $content -split ';') {
-                  # $kvp = $line -split '='
-                  # $key = $kvp[0]
-                  # $value = $kvp[1]
-                  # Write-Output ("$key=$value") >> $env:GITHUB_ENV
-                  # Write-Output ("$key=$value") >> $env:GITHUB_OUTPUT
-                # }
-            # - name: Echo Filename
-              # run: echo $BUILDTEXT $ASSEMBLYNAME $ARTIFACTPATH
-              # env:
-                  # BUILDTEXT: Filename=${{ env.filename }}
-                  # ASSEMBLYNAME: AssemblyName=${{ env.assemblyname }}
-                  # ARTIFACTPATH: ArtifactPath=${{ env.artifactpath }}
-            # - name: Upload Artifact
-              # uses: actions/upload-artifact@v4
-              # with:
-                  # name: ${{ env.filename }}
-                  # path: ${{ env.artifactpath }}
-            # #- name: List files
-            # #  run: Get-ChildItem -Path ./ -Recurse
-            # #  shell: pwsh
-            # - name: Upload Release Asset
-              # if: startsWith(github.ref, 'refs/tags/')
-              # env:
-                  # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              # run:
-                  # gh release upload ${{ github.ref_name }} D:/a/VoiceCommander/VoiceCommander/VoiceCommander/bin/Release/zip/${{ env.filename }}.zip
+            - name: Build
+              id: Build
+              run: msbuild ${{ github.workspace }}/PauseCommander.sln /property:Configuration=Release
+            - name: GitStatus
+              run: git status
+            - name: Read variables from file and set outputs
+              id: set-outputs
+              shell: pwsh
+              run: |
+                $content = Get-Content -Path ${{ github.workspace }}/PauseCommander/build_output.txt
+                foreach ($line in $content -split ';') {
+                  $kvp = $line -split '='
+                  $key = $kvp[0]
+                  $value = $kvp[1]
+                  Write-Output ("$key=$value") >> $env:GITHUB_ENV
+                  Write-Output ("$key=$value") >> $env:GITHUB_OUTPUT
+                }
+            - name: Echo Filename
+              run: echo $BUILDTEXT $ASSEMBLYNAME $ARTIFACTPATH
+              env:
+                  BUILDTEXT: Filename=${{ env.filename }}
+                  ASSEMBLYNAME: AssemblyName=${{ env.assemblyname }}
+                  ARTIFACTPATH: ArtifactPath=${{ env.artifactpath }}
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ${{ env.filename }}
+                  path: ${{ env.artifactpath }}
+            - name: List files
+             run: Get-ChildItem -Path ./ -Recurse
+             shell: pwsh
+            - name: Upload Release Asset
+              if: startsWith(github.ref, 'refs/tags/')
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run:
+                  gh release upload ${{ github.ref_name }} D:/a/PauseCommander/PauseCommander/PauseCommander/bin/Release/zip/${{ env.filename }}.zip
