@@ -2,7 +2,7 @@ name: Build
 
 on:
     push:
-        branches: [master, CI]
+        branches: [master]
         tags: v*
     pull_request:
         branches: [master]
@@ -80,9 +80,9 @@ jobs:
               with:
                   name: ${{ env.filename }}
                   path: ${{ env.artifactpath }}
-            - name: List files
-              run: Get-ChildItem -Path ./ -Recurse
-              shell: pwsh
+            # - name: List files
+              # run: Get-ChildItem -Path ./ -Recurse
+              # shell: pwsh
             - name: Upload Release Asset
               if: startsWith(github.ref, 'refs/tags/')
               env:
