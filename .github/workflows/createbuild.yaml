@@ -44,7 +44,7 @@ jobs:
 
             - name: Copy files to repository
               run: |
-                Copy-Item -Path "$env:TEMP\unzipped\*" -Destination "${{ github.workspace }}/Refs" -Recurse
+                Copy-Item -Path "$env:TEMP\unzipped\*" -Destination "${{ github.workspace }}/Refs" -Recurse -Force
               shell: pwsh
             - name: Build
               id: Build
