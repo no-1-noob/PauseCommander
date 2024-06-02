@@ -2,10 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
   "id": "PauseCommander",
   "name": "PauseCommander",
-  "author": "",
+  "author": "No.1 N[][]b",
   "version": "0.0.1",
-  "description": "",
-  "gameVersion": "1.18.3",
+  "description": "Pause the game with your voice",
+  "gameVersion": "1.29.0",
   "dependsOn": {
     "BSIPA": "^4.2.0",
     "BeatSaberMarkupLanguage": "^1.6.1",
