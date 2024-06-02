@@ -148,6 +148,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
+    <EmbeddedResource Include="manifest.build.json" />
+    <None Include="Directory.Build.targets" />
     <None Include="PauseCommander.csproj.user" Condition="Exists('PauseCommander.csproj.user')" />
     <EmbeddedResource Include="UI\View\SettingsMidView.bsml" />
   </ItemGroup>
