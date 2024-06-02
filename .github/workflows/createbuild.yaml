@@ -17,7 +17,7 @@ jobs:
             - name: Add msbuild to PATH
               uses: microsoft/setup-msbuild@v2
               
-              - name: Initialize modding environment
+            - name: Initialize modding environment
               uses: beat-forge/init-beatsaber@v1.1.0
               with:
                   token: ${{ github.token }}
@@ -75,8 +75,8 @@ jobs:
                   name: ${{ env.filename }}
                   path: ${{ env.artifactpath }}
             - name: List files
-             run: Get-ChildItem -Path ./ -Recurse
-             shell: pwsh
+              run: Get-ChildItem -Path ./ -Recurse
+              shell: pwsh
             - name: Upload Release Asset
               if: startsWith(github.ref, 'refs/tags/')
               env:
