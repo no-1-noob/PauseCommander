@@ -13,7 +13,7 @@
     "VoiceCommander.VoiceCommand": {
       "Commands": [
         {
-          "name": "PauseCommander",
+          "Name": "PauseCommander",
           "CommandLoacation": "PauseCommander.Command.PauseCommand",
           "ZenjectLocation": "0xC"
         }

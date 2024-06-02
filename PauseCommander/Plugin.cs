@@ -7,14 +7,14 @@ using BeatSaberMarkupLanguage;
 using HMUI;
 using PauseCommander.UI;
 using BeatSaberMarkupLanguage.MenuButtons;
+using SimpleUpdateChecker.Plugin;
 
 namespace PauseCommander
 {
     [Plugin(RuntimeOptions.SingleStartInit)]
-    public class Plugin
+    internal class Plugin : SimpleUpdatePlugin
     {
         internal static Plugin Instance { get; private set; }
-        internal static IPALogger Log { get; private set; }
         internal static FlowCoordinator ParentFlow { get; private set; }
         private static PauseCommanderFlowCoordinator _flow;
 
@@ -26,13 +26,12 @@ namespace PauseCommander
         /// </summary>
         public void Init(IPALogger logger, Zenjector zenjector, IPA.Config.Config conf)
         {
+            base.CreateSimpleUpdateChecker(logger, zenjector, "https://mods.no1noob.net/api/PauseCommander_1_29", "https://github.com/no-1-noob/PauseCommander/releases");
             Instance = this;
-            Log = logger;
             Log.Info("PauseCommander initialized.");
             if(conf != null)
             {
                 Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
-                Log.Debug("Config loaded");
             }
             zenjector.Install<PauseSongInstaller>(Location.StandardPlayer | Location.CampaignPlayer);
             MenuButtons.instance.RegisterButton(new MenuButton("Pause Commander", "Pause the game with your voice", ShowSettingsFlow, true));
@@ -44,7 +43,7 @@ namespace PauseCommander
         }
 
         [OnExit]
-        public void OnApplicationQuit()
+        new public void OnApplicationQuit()
         {
         }
 
