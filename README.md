@@ -8,6 +8,10 @@ A mod that allows you to activate automated pauses using your voice. So you can 
 
 ## Settings
 
+|Setting|Description|Default|
+|---|---|---|
+|Min pause length|How long must the gap between two notes be to be classified as a potential pause?|1.5s|
+|Controller disconnect pauses|Automatically pause if controller is disconnected (Only tested on Index)|Disabled|
 ## Counters+
 
 Pause found:
