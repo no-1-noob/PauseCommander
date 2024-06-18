@@ -33,11 +33,7 @@ namespace PauseCommander.Logic
             beatmapObjectManager.noteWasCutEvent += BeatmapObjectManager_noteWasCutEvent;
             beatmapObjectManager.noteWasMissedEvent += BeatmapObjectManager_noteWasMissedEvent;
             pauseController.didPauseEvent += PauseController_didPauseEvent;
-            if (setupData != null)
-            {
-                _ = GetPausesFromSong();
-
-            }
+            _ = GetPausesFromSong();
             InputDevices.deviceDisconnected += InputDevices_deviceDisconnected;
         }
 
