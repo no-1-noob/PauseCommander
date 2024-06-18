@@ -16,9 +16,9 @@ namespace PauseCommander.Command
 
         public PauseCommand()
         {
-            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommand.Immediate", "Immediate pause", 0.9f, () => pauseMgr.ImmediatePause()));
-            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommand.Activate", "Activate pause", 0.9f, () => pauseMgr.ActivatePause()));
-            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommand.Disable", "Disable pause", 0.9f, () => pauseMgr.DisablePause()));
+            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommand.Immediate", "Immediate pause", 0.85f, () => pauseMgr.ImmediatePause()));
+            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommand.Activate", "Activate pause", 0.85f, () => pauseMgr.ActivatePause()));
+            lsVoicecommand.Add(new VoiceCommand("PauseCommander.PauseCommand.Disable", "Disable pause", 0.85f, () => pauseMgr.DisablePause()));
         }        
     }
 }

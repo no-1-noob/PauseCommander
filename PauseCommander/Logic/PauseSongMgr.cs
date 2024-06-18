@@ -33,9 +33,9 @@ namespace PauseCommander.Logic
             beatmapObjectManager.noteWasCutEvent += BeatmapObjectManager_noteWasCutEvent;
             beatmapObjectManager.noteWasMissedEvent += BeatmapObjectManager_noteWasMissedEvent;
             pauseController.didPauseEvent += PauseController_didPauseEvent;
-            if (setupData?.previewBeatmapLevel is CustomBeatmapLevel)
+            if (setupData != null)
             {
-                _ = GetPausesFromSong(setupData.previewBeatmapLevel as CustomBeatmapLevel, setupData.difficultyBeatmap, setupData.playerSpecificSettings);
+                _ = GetPausesFromSong();
 
             }
             InputDevices.deviceDisconnected += InputDevices_deviceDisconnected;
@@ -78,11 +78,10 @@ namespace PauseCommander.Logic
         #endregion
 
         #region Pause setup
-        internal async Task GetPausesFromSong(CustomBeatmapLevel customBeatmapLevel, IDifficultyBeatmap difficultyBeatmap, PlayerSpecificSettings playerSpecificSettings)
+        internal async Task GetPausesFromSong()
         {
             DateTime dtStart = DateTime.Now;
-            IReadonlyBeatmapData beatmapData = await difficultyBeatmap.GetBeatmapDataAsync(customBeatmapLevel.environmentInfo, playerSpecificSettings);
-            List<NoteData> lsNoteData = GetNoteData(beatmapData);
+            List<NoteData> lsNoteData = GetNoteData(setupData.transformedBeatmapData);
             lsPause = GetPauses(lsNoteData, Configuration.PluginConfig.Instance.MinPauseLength, pauseDelay);
         }
 
