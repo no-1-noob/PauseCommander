@@ -144,7 +144,7 @@ jobs:
 
             - name: Unzip file
               run: |
-                Expand-Archive -Path "$env:TEMP\CPLUS" -DestinationPath "$env:TEMP\cplusunzipped"
+                Expand-Archive -Path "$env:TEMP\CPLUS.zip" -DestinationPath "$env:TEMP\cplusunzipped"
               shell: pwsh
 
             - name: List files
