@@ -2,7 +2,7 @@ name: Build
 
 on:
     push:
-        branches: [master]
+        branches: [master, multiCI]
         tags: v*
     pull_request:
         branches: [master]
@@ -136,6 +136,27 @@ jobs:
               run: |
                 Copy-Item -Path "$env:TEMP\unzipped\*" -Destination "${{ github.workspace }}/Refs" -Recurse -Force
               shell: pwsh
+
+            - name: Download ZIP file
+              run: |
+                Invoke-WebRequest -Uri "https://github.com/NuggoDEV/CountersPlus/releases/download/2.3.5/Counters+-2.3.5-bs1.34.2-7b8c995.zip" -OutFile "$env:TEMP\CPLUS.zip"
+              shell: pwsh
+
+            - name: Unzip file
+              run: |
+                Expand-Archive -Path "$env:TEMP\CPLUS" -DestinationPath "$env:TEMP\cplusunzipped"
+              shell: pwsh
+
+            - name: List files
+              run: |
+                Get-ChildItem -Path "$env:TEMP\cplusunzipped"
+              shell: pwsh
+
+            - name: Copy files to repository
+              run: |
+                Copy-Item -Path "$env:TEMP\cplusunzipped\*" -Destination "${{ github.workspace }}/Refs" -Recurse -Force
+              shell: pwsh
+
             - name: Build
               id: Build
               run: msbuild ${{ github.workspace }}/PauseCommander.sln /property:Configuration=Release
@@ -179,7 +200,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
               with:
-                  ref: 'master'
+                  ref: '1_35'
                   submodules: recursive
             - name: Add msbuild to PATH
               uses: microsoft/setup-msbuild@v2
