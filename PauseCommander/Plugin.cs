@@ -26,7 +26,7 @@ namespace PauseCommander
         /// </summary>
         public void Init(IPALogger logger, Zenjector zenjector, IPA.Config.Config conf)
         {
-            base.CreateSimpleUpdateChecker(logger, zenjector, "https://mods.no1noob.net/api/PauseCommander_1_29", "https://github.com/no-1-noob/PauseCommander/releases");
+            base.CreateSimpleUpdateChecker(logger, zenjector, "https://mods.no1noob.net/api/PauseCommander_1_34", "https://github.com/no-1-noob/PauseCommander/releases");
             Instance = this;
             Log.Info("PauseCommander initialized.");
             if(conf != null)
