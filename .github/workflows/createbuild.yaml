@@ -36,7 +36,7 @@ jobs:
               
             - name: Download ZIP file
               run: |
-                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.29.0-4392554.zip" -OutFile "$env:TEMP\VC.zip"
+                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.29.0-719bd07.zip" -OutFile "$env:TEMP\VC.zip"
               shell: pwsh
 
             - name: Unzip file
@@ -119,7 +119,7 @@ jobs:
               
             - name: Download ZIP file
               run: |
-                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.35.0-e307d21.zip" -OutFile "$env:TEMP\VC.zip"
+                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.35.0-1cc0e98.zip" -OutFile "$env:TEMP\VC.zip"
               shell: pwsh
 
             - name: Unzip file
@@ -223,7 +223,7 @@ jobs:
               
             - name: Download ZIP file
               run: |
-                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.35.0-e307d21.zip" -OutFile "$env:TEMP\VC.zip"
+                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.35.0-1cc0e98.zip" -OutFile "$env:TEMP\VC.zip"
               shell: pwsh
 
             - name: Unzip file
