@@ -8,11 +8,12 @@ on:
         branches: [master]
 
 jobs:
-    Build:
+    Build_1_29:
         runs-on: windows-latest
         steps:
             - uses: actions/checkout@v3
               with:
+                  ref: 'master'
                   submodules: recursive
             - name: Add msbuild to PATH
               uses: microsoft/setup-msbuild@v2
@@ -35,7 +36,173 @@ jobs:
               
             - name: Download ZIP file
               run: |
-                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.29.0-0a3399c.zip" -OutFile "$env:TEMP\VC.zip"
+                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.29.0-4392554.zip" -OutFile "$env:TEMP\VC.zip"
+              shell: pwsh
+
+            - name: Unzip file
+              run: |
+                Expand-Archive -Path "$env:TEMP\VC.zip" -DestinationPath "$env:TEMP\unzipped"
+              shell: pwsh
+
+            - name: List files
+              run: |
+                Get-ChildItem -Path "$env:TEMP\unzipped"
+              shell: pwsh
+
+            - name: Copy files to repository
+              run: |
+                Copy-Item -Path "$env:TEMP\unzipped\*" -Destination "${{ github.workspace }}/Refs" -Recurse -Force
+              shell: pwsh
+            - name: Build
+              id: Build
+              run: msbuild ${{ github.workspace }}/PauseCommander.sln /property:Configuration=Release
+            - name: GitStatus
+              run: git status
+            - name: Read variables from file and set outputs
+              id: set-outputs
+              shell: pwsh
+              run: |
+                $content = Get-Content -Path ${{ github.workspace }}/PauseCommander/build_output.txt
+                foreach ($line in $content -split ';') {
+                  $kvp = $line -split '='
+                  $key = $kvp[0]
+                  $value = $kvp[1]
+                  Write-Output ("$key=$value") >> $env:GITHUB_ENV
+                  Write-Output ("$key=$value") >> $env:GITHUB_OUTPUT
+                }
+            - name: Echo Filename
+              run: echo $BUILDTEXT $ASSEMBLYNAME $ARTIFACTPATH
+              env:
+                  BUILDTEXT: Filename=${{ env.filename }}
+                  ASSEMBLYNAME: AssemblyName=${{ env.assemblyname }}
+                  ARTIFACTPATH: ArtifactPath=${{ env.artifactpath }}
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ${{ env.filename }}
+                  path: ${{ env.artifactpath }}
+            # - name: List files
+              # run: Get-ChildItem -Path ./ -Recurse
+              # shell: pwsh
+            - name: Upload Release Asset
+              if: startsWith(github.ref, 'refs/tags/')
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run:
+                  gh release upload ${{ github.ref_name }} D:/a/PauseCommander/PauseCommander/PauseCommander/bin/Release/zip/${{ env.filename }}.zip
+
+    Build_1_34:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  ref: '1_34'
+                  submodules: recursive
+            - name: Add msbuild to PATH
+              uses: microsoft/setup-msbuild@v2
+              
+            - name: Setup Nuget
+              uses: Nuget/setup-nuget@v1.0.5
+
+            - name: Restore nuget packages
+              run: nuget restore ${{ github.workspace }}/PauseCommander.sln
+              
+            - name: Initialize modding environment
+              uses: beat-forge/init-beatsaber@v1.1.0
+              with:
+                  token: ${{ github.token }}
+                  version: 1.34.0
+            - name: Download Mod Dependencies
+              uses: Goobwabber/download-beatmods-deps@1.2
+              with:
+                  manifest: ${{ github.workspace }}/PauseCommander/manifest.json
+              
+            - name: Download ZIP file
+              run: |
+                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.35.0-e307d21.zip" -OutFile "$env:TEMP\VC.zip"
+              shell: pwsh
+
+            - name: Unzip file
+              run: |
+                Expand-Archive -Path "$env:TEMP\VC.zip" -DestinationPath "$env:TEMP\unzipped"
+              shell: pwsh
+
+            - name: List files
+              run: |
+                Get-ChildItem -Path "$env:TEMP\unzipped"
+              shell: pwsh
+
+            - name: Copy files to repository
+              run: |
+                Copy-Item -Path "$env:TEMP\unzipped\*" -Destination "${{ github.workspace }}/Refs" -Recurse -Force
+              shell: pwsh
+            - name: Build
+              id: Build
+              run: msbuild ${{ github.workspace }}/PauseCommander.sln /property:Configuration=Release
+            - name: GitStatus
+              run: git status
+            - name: Read variables from file and set outputs
+              id: set-outputs
+              shell: pwsh
+              run: |
+                $content = Get-Content -Path ${{ github.workspace }}/PauseCommander/build_output.txt
+                foreach ($line in $content -split ';') {
+                  $kvp = $line -split '='
+                  $key = $kvp[0]
+                  $value = $kvp[1]
+                  Write-Output ("$key=$value") >> $env:GITHUB_ENV
+                  Write-Output ("$key=$value") >> $env:GITHUB_OUTPUT
+                }
+            - name: Echo Filename
+              run: echo $BUILDTEXT $ASSEMBLYNAME $ARTIFACTPATH
+              env:
+                  BUILDTEXT: Filename=${{ env.filename }}
+                  ASSEMBLYNAME: AssemblyName=${{ env.assemblyname }}
+                  ARTIFACTPATH: ArtifactPath=${{ env.artifactpath }}
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ${{ env.filename }}
+                  path: ${{ env.artifactpath }}
+            # - name: List files
+              # run: Get-ChildItem -Path ./ -Recurse
+              # shell: pwsh
+            - name: Upload Release Asset
+              if: startsWith(github.ref, 'refs/tags/')
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run:
+                  gh release upload ${{ github.ref_name }} D:/a/PauseCommander/PauseCommander/PauseCommander/bin/Release/zip/${{ env.filename }}.zip
+
+    Build_1_35:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  ref: 'master'
+                  submodules: recursive
+            - name: Add msbuild to PATH
+              uses: microsoft/setup-msbuild@v2
+              
+            - name: Setup Nuget
+              uses: Nuget/setup-nuget@v1.0.5
+
+            - name: Restore nuget packages
+              run: nuget restore ${{ github.workspace }}/PauseCommander.sln
+              
+            - name: Initialize modding environment
+              uses: beat-forge/init-beatsaber@v1.1.0
+              with:
+                  token: ${{ github.token }}
+                  version: 1.35.0
+            - name: Download Mod Dependencies
+              uses: Goobwabber/download-beatmods-deps@1.2
+              with:
+                  manifest: ${{ github.workspace }}/PauseCommander/manifest.json
+              
+            - name: Download ZIP file
+              run: |
+                Invoke-WebRequest -Uri "https://github.com/no-1-noob/VoiceCommander/releases/download/v0.0.1/VoiceCommander-0.0.1-bs1.35.0-e307d21.zip" -OutFile "$env:TEMP\VC.zip"
               shell: pwsh
 
             - name: Unzip file
